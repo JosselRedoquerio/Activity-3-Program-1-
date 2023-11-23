@@ -1,0 +1,63 @@
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import PhotoImage
+import pyttsx3
+
+def calculate_cost():
+    try:
+        apples_quantity = int(apple_entry.get())
+        oranges_quantity = int(orange_entry.get())
+
+        total_cost = apples_quantity * apple_price + oranges_quantity * orange_price
+
+        result_label.config(text=f"Total Cost: ₱{total_cost}", font=("Helvetica", 10, "italic"))
+
+        # Voice assistance with a female voice
+        engine = pyttsx3.init()
+        
+        # Set the voice to a female voice (change the voice ID or name based on your system)
+        # You can find the voice ID or name from the available voices list
+        # engine.setProperty('voice', 'com.apple.speech.synthesis.voice.Fred')  # Example for MacOS
+        engine.setProperty('voice', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\TTS_MS_EN-US_ZIRA_11.0')  # Example for Windows
+
+        engine.say(f"You have selected {apples_quantity} apples and {oranges_quantity} oranges. The total cost is {total_cost} pesos.")
+        engine.runAndWait()
+
+    except ValueError:
+        messagebox.showerror("Error", "Please enter valid quantities for apples and oranges.")
+
+# Set the prices
+apple_price = 20
+orange_price = 25
+
+# Create the main window
+window = tk.Tk()
+window.title("Fruit Shop")
+window.geometry("1280x720")
+
+# Create a frame to hold the content
+frame = tk.Frame(window)
+frame.pack(expand=True, fill="both")
+
+# Set a background image
+background_image = PhotoImage(file=r"C:\Users\RLF\Downloads\Jossel's prutasan.png")
+background_label = tk.Label(frame, image=background_image)
+background_label.place(relwidth=1, relheight=1)
+
+# Create and place widgets in the frame
+tk.Label(frame, text="How many apples do you want to buy?", font=("Times New Roman", 14)).place(relx=0.5, rely=0.4, anchor="center")
+apple_entry = tk.Entry(frame)
+apple_entry.place(relx=0.5, rely=0.45, anchor="center")
+
+tk.Label(frame, text="How many oranges do you want to buy?", font=("Times New Roman", 14)).place(relx=0.5, rely=0.5, anchor="center")
+orange_entry = tk.Entry(frame)
+orange_entry.place(relx=0.5, rely=0.55, anchor="center")
+
+calculate_button = tk.Button(frame, text="Calculate", command=calculate_cost, font=("Arial", 12, "bold"))
+calculate_button.place(relx=0.5, rely=0.6, anchor="center")
+
+result_label = tk.Label(frame, text="", font=("Times New Roman", 14))
+result_label.place(relx=0.5, rely=0.65, anchor="center")
+
+# Run the Tkinter event loop
+window.mainloop()
